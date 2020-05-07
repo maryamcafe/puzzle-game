@@ -1,4 +1,4 @@
-package board;
+package model;
 
 public class Location {
     private int x, y;

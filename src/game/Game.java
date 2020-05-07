@@ -1,50 +1,27 @@
 package game;
 
-import board.Location;
-import board.PuzzlePiece;
 import display.Display;
 import display.MyPanel;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class Game implements Runnable {
 
     boolean gameFinished = false;
-    private Display display;
     private MyPanel panel;
     private JFrame frame;
 
     public Game() {
-        display = Display.getInstance();
-        panel = display.getPanel();
-        frame = display.getFrame();
-
-        initGame();
+        panel = Display.getInstance().getPanel();
+        frame = Display.getInstance().getFrame();
+        warnIfNotSolvable();
     }
 
-    private void initGame() {
-
-        ArrayList<PuzzlePiece> puzzlePieces = new ArrayList<>();
-        ArrayList<Integer> piecesRandomOrder = new ArrayList<>(Arrays.asList(0, 5, 6, 7, 4, 3, 2, 8, 1));
-        panel.setMissingPiece(7);
-
-        for (int i = 0; i < 9; i++) {
-            if (panel.getMissingPiece() != i) {
-                puzzlePieces.add(new PuzzlePiece(piecesRandomOrder.get(i) + 1 + ".png",
-                        new Location(panel.getHeight() / 3 * (i % 3), panel.getWidth() / 3 * (i / 3))));
-            } else {
-                puzzlePieces.add(new PuzzlePiece("missing.jpg",
-                        new Location(panel.getHeight() / 3 * (i % 3), panel.getWidth() / 3 * (i / 3))));
-            }
-
-            panel.setPuzzlePieces(puzzlePieces);
-
-            if (!solvable(panel.getMissingPiece(), piecesRandomOrder)) {
-                JOptionPane.showMessageDialog(display.getPanel(), "this puzzle is not solvable, change your config and try again", "Puzzle not solvable", JOptionPane.WARNING_MESSAGE);
-                gameFinished = true;
-            }
+    private void warnIfNotSolvable() {
+        if (!solvable(panel.getMissingPiece(),panel.getRandomOrder())) {
+            JOptionPane.showMessageDialog(panel, "this puzzle is not solvable, change your config and try again", "Puzzle not solvable", JOptionPane.WARNING_MESSAGE);
+            gameFinished = true;
         }
     }
 
@@ -67,7 +44,7 @@ public class Game implements Runnable {
     }
 
 
-    private boolean solvable(int missingPiece, ArrayList<Integer> piecesOrder) {
+    private boolean solvable(int missingPiece, List<Integer> piecesOrder) {
         int inversionCount = 0;
         for (int i = 0; i < piecesOrder.size(); i++) {
             for (int j = i + 1; j < piecesOrder.size(); j++) {

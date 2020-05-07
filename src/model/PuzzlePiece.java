@@ -1,4 +1,4 @@
-package board;
+package model;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -55,8 +55,7 @@ public class PuzzlePiece {
     }
 
     public PuzzlePiece getClone() {
-        PuzzlePiece clone = new PuzzlePiece(img, location, pieceNumber);
+        return new PuzzlePiece(img, location, pieceNumber);
 
-        return clone;
     }
 }

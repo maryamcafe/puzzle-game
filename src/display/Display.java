@@ -1,20 +1,19 @@
 package display;
 
+import util.PanelConfigs;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Dimension2D;
 
 public class Display {
 
     private static Display instance;
     private JFrame frame;
     private MyPanel panel;
-    private int screenWidth, screenHeight, maxSize;
+    private int  panelSize;
 
     public Display(){
-        screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-        screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-        maxSize = Math.max(screenWidth, screenHeight) / 3;
+         panelSize = new PanelConfigs().getPanelSize();
         initDisplay();
     }
 
@@ -29,10 +28,9 @@ public class Display {
         frame = new JFrame();
         panel = MyPanel.getInstance();
 
-        panel.setSize(maxSize, maxSize);
-        panel.setLocation(screenWidth / 2 - maxSize / 2, screenHeight / 2 - maxSize / 2);
+        panel.setSize(panelSize, panelSize);
         frame.setSize(panel.getSize());
-        frame.setLocation(panel.getLocation());
+        frame.setLocationRelativeTo(null);
         frame.add(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,4 +47,5 @@ public class Display {
     public MyPanel getPanel() {
         return panel;
     }
+
 }

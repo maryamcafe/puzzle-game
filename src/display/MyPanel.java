@@ -1,25 +1,32 @@
 package display;
 
-import board.PuzzlePiece;
+import model.Board;
+import model.BoardBuilder;
+import model.PuzzlePiece;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyPanel extends JPanel {
     private static MyPanel panelInstance;
-    private ArrayList<PuzzlePiece> puzzlePieces = new ArrayList<>();
-    private int missingPiece = 0;
+//    private List<PuzzlePiece> puzzlePieces = new ArrayList<>();
+    private transient List<PuzzlePiece> puzzlePieces;
+    private List<Integer> randomOrder;
+    private int missingPiece;
     private String gameState = "#";
 
     private MyPanel() {
-
+        Board board = new BoardBuilder().createBoard();
+        puzzlePieces = board.getPuzzlePieces();
+        missingPiece = board.getMissingPiece();
+        randomOrder = board.getInitialOrder();
     }
 
     public static MyPanel getInstance() {
         if (panelInstance == null) {
             panelInstance = new MyPanel();
-            return panelInstance;
         }
         return panelInstance;
     }
@@ -34,6 +41,10 @@ public class MyPanel extends JPanel {
 
     public void setMissingPiece(int missingPiece) {
         this.missingPiece = missingPiece;
+    }
+
+    public List<Integer> getRandomOrder() {
+        return randomOrder;
     }
 
     public String getGameState() {
@@ -77,7 +88,12 @@ public class MyPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (PuzzlePiece piece : puzzlePieces) {
-            g.drawImage(piece.getImage(), piece.getLocation().getX(), piece.getLocation().getY(), (int) this.getSize().getWidth() / 3, (int) this.getSize().getHeight() / 3, null);
+            g.drawImage(piece.getImage(),
+                    piece.getLocation().getX(),
+                    piece.getLocation().getY(),
+                    (int) this.getSize().getWidth() / 3, //these are constants and therefore should be replaced.
+                    (int) this.getSize().getHeight() / 3,
+                    null);
         }
     }
 }
