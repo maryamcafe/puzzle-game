@@ -11,29 +11,31 @@ public class Board {
     //we could also create an array instead of arrayList,
     // but it will prevent us from developing the game in other ways.
     private transient List<PuzzlePiece> puzzlePieces;
-    private transient int panelWidth, panelHeight, missingPiece;
+    private transient int panelWidth, panelHeight, missingPiece,
+            missingPieceIndex, totalPieces, rows;
 
 
     public Board(List<Integer> initialOrder){
         this.initialOrder = initialOrder;
 
-        PanelConfigs configs = new PanelConfigs();
+        PanelConfigs configs = PanelConfigs.getInstance();
         panelHeight = configs.getPanelSize();
         panelWidth = configs.getPanelSize();
+
+        totalPieces = configs.getTotalPieces();
+        missingPiece = configs.getMissingPiece();
+        rows = configs.getRows();
+
         puzzlePieces = new ArrayList<>();
         initPuzzlePieces();
     }
 
 
     private void initPuzzlePieces() {
-        missingPiece = initialOrder.indexOf(8);
-        for (int i = 0; i < 9; i++) {
-            Location location = new Location(panelHeight / 3 * (i % 3), panelWidth / 3 * (i / 3));
-            if (missingPiece != i) {
-                puzzlePieces.add(new PuzzlePiece(initialOrder.get(i) + 1 + ".png",location));
-            } else {
-                puzzlePieces.add(new PuzzlePiece("missing.jpg", location));
-            }
+        missingPieceIndex = initialOrder.indexOf(missingPiece);
+        for (int i = 0; i < totalPieces; i++) {
+            Location location = new Location(panelHeight / rows * (i % rows), panelWidth / rows * (i / rows));
+            puzzlePieces.add(new PuzzlePiece(initialOrder.get(i), location));
         }
     }
 
@@ -45,7 +47,14 @@ public class Board {
         return puzzlePieces;
     }
 
-    public int getMissingPiece() {
-        return missingPiece;
+    public int getMissingPieceIndex() {
+        return missingPieceIndex;
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "initialOrder=" + initialOrder +
+                '}';
     }
 }

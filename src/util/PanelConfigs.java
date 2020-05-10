@@ -4,11 +4,18 @@ import java.awt.*;
 
 public class PanelConfigs {
 
-    private int width, height, totalPieces;
+    private int panelSize, totalPieces, missingPiece, rows;
     private Configs configs;
-    private int panelSize;
+    private static PanelConfigs instance;
 
-    public PanelConfigs(){
+    public static PanelConfigs getInstance(){
+        if (instance == null){
+            instance = new PanelConfigs();
+        }
+        return instance;
+    }
+
+    private PanelConfigs(){
         ConfigLoader loader = ConfigLoader.getInstance();
         configs = loader.getPanelConfigs();
         setConfigs();
@@ -19,8 +26,15 @@ public class PanelConfigs {
         int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         panelSize = Math.max(screenWidth, screenHeight) / 3 - 10;
         totalPieces = configs.readInt("totalPieces");
+        missingPiece = totalPieces - 1;
+        setRows();
     }
 
+    private void setRows() {
+        if(totalPieces==9){
+            rows = 3;
+        }
+    }
 
     public int getPanelSize() {
         return panelSize;
@@ -30,4 +44,11 @@ public class PanelConfigs {
         return totalPieces;
     }
 
+    public int getMissingPiece() {
+        return missingPiece;
+    }
+
+    public int getRows() {
+        return rows;
+    }
 }

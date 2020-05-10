@@ -70,14 +70,16 @@ public class ConfigLoader {
                         Type type = new TypeToken<List<Board>>() {
                         }.getType();
                         boardConfigs = gson.fromJson(reader, type);
-                    } else if (searchKey.contains("asset")) {
-                        assetsPath = address;
                     }
                     reader.close();
-
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                     e.printStackTrace();
+                }
+            }
+            if(searchKey.contains("path")){
+                if (searchKey.contains("asset")) {
+                    assetsPath = address;
                 }
             }
         }

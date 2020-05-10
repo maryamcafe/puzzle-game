@@ -13,7 +13,7 @@ public class Display {
     private int  panelSize;
 
     public Display(){
-         panelSize = new PanelConfigs().getPanelSize();
+         panelSize = PanelConfigs.getInstance().getPanelSize();
         initDisplay();
     }
 
@@ -34,7 +34,7 @@ public class Display {
         frame.add(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        frame.addKeyListener(new MyKeyListener());
+        frame.addKeyListener(new MyKeyListener(panel));
 
         frame.setVisible(true);
     }

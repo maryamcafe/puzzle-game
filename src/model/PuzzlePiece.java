@@ -1,5 +1,7 @@
 package model;
 
+import util.ImageLoader;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
@@ -9,29 +11,19 @@ public class PuzzlePiece {
     private Location location;
     private Image img;
     private int pieceNumber;
+    private String imageName;
 
-    private PuzzlePiece(String imageName) {
-        try {
-            img = ImageIO.read(new File("src/assets/" + imageName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!imageName.equals("missing.jpg")) {
-            pieceNumber = Integer.parseInt(imageName.substring(0, 1)) - 1;
-        } else {
-            pieceNumber = 8;
-        }
-    }
-
-    public PuzzlePiece(String ImagePath, Location location) {
-        this(ImagePath);
-        this.location = location;
-    }
 
     private PuzzlePiece(Image img, Location location, int pieceIdentifier) {
         this.img = img;
         this.location = location;
         this.pieceNumber = pieceIdentifier;
+    }
+
+    public PuzzlePiece(Integer pieceNumber, Location location) {
+        this.pieceNumber = pieceNumber;
+        this.location = location;
+        img = new ImageLoader().load(pieceNumber);
     }
 
     public int getPieceNumber() {
@@ -56,6 +48,5 @@ public class PuzzlePiece {
 
     public PuzzlePiece getClone() {
         return new PuzzlePiece(img, location, pieceNumber);
-
     }
 }

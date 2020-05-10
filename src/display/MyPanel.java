@@ -15,12 +15,11 @@ public class MyPanel extends JPanel {
     private transient List<PuzzlePiece> puzzlePieces;
     private List<Integer> randomOrder;
     private int missingPiece;
-    private String gameState = "#";
 
     private MyPanel() {
         Board board = new BoardBuilder().createBoard();
         puzzlePieces = board.getPuzzlePieces();
-        missingPiece = board.getMissingPiece();
+        missingPiece = board.getMissingPieceIndex();
         randomOrder = board.getInitialOrder();
     }
 
@@ -43,16 +42,8 @@ public class MyPanel extends JPanel {
         this.missingPiece = missingPiece;
     }
 
-    public List<Integer> getRandomOrder() {
-        return randomOrder;
-    }
-
-    public String getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
+    public List<PuzzlePiece> getPuzzlePieces() {
+        return puzzlePieces;
     }
 
 
@@ -62,25 +53,6 @@ public class MyPanel extends JPanel {
         puzzlePieces.get(i).setPieceNumber(puzzlePieces.get(j).getPieceNumber());
         puzzlePieces.get(j).setImage(copy.getImage());
         puzzlePieces.get(j).setPieceNumber(copy.getPieceNumber());
-
-
-        if (gameFinished()) {
-            gameState = "finished";
-        }
-    }
-
-    private boolean gameFinished() {
-        for (int i = 0; i < 9; i++) {
-            int pieceIdentifier = puzzlePieces.get(i).getPieceNumber();
-            if (pieceIdentifier == 8) {
-                continue;
-            }
-
-            if (pieceIdentifier != i) {
-                return false;
-            }
-        }
-        return true;
     }
 
 
